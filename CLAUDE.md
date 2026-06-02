@@ -80,3 +80,33 @@ All configuration is environment-variable-based:
 ### Deployment
 
 Helm chart is in `helm/paigham-nats/`. The chart manages deployment, service, HPA, optional ingress, and a secret for config values.
+
+## Versioning Rules — MUST follow on every change
+
+### Helm chart (`helm/paigham-nats/Chart.yaml`)
+
+**Always bump `version` when making any chart change** (templates, values, Chart.yaml metadata). The `helm-release` workflow creates a GitHub Release tagged `paigham-nats-<version>` on every push to `main` that touches `helm/**`. If the version already has a release tag, the workflow fails with `422 already_exists`. There is no auto-increment — you must bump it manually.
+
+- `version` — the chart package version (SemVer). Bump for any chart change.
+- `appVersion` — the application version this chart deploys. Update when the Docker image has a new release tag (e.g. `v1.1.0`). This is informational only and does not affect CI.
+
+```yaml
+# helm/paigham-nats/Chart.yaml
+version: 0.1.2        # ← bump this on every helm/** change merged to main
+appVersion: "1.0.0"   # ← update when a new Docker image version tag is published
+```
+
+### Docker image (`ghcr.io/letsconvert-io/paigham-nats`)
+
+The `docker-release` workflow publishes on every push to `main` **and** on version tags. Tags produced:
+
+| Trigger | Image tags |
+|---|---|
+| Push to `main` | `main`, `sha-<short>` |
+| Git tag `v1.2.3` | `1.2.3`, `1.2`, `main`, `sha-<short>` |
+
+To publish a versioned release (e.g. `1.1.0`), push a tag:
+```bash
+git tag v1.1.0 && git push origin v1.1.0
+```
+Then update `appVersion` in `Chart.yaml` to match and bump `version`.
