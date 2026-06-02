@@ -3,6 +3,29 @@ entries:
   paigham-nats:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-06-02T19:39:19.259919584Z"
+    description: A Helm chart for Paigham - NATS JetStream Management UI
+    digest: 2539fcd1a935bccb7c475db434f4c84acaa524b0737aeae0c3131785d3a085b7
+    home: https://github.com/LetsConvert-IO/paigham-nats
+    keywords:
+    - nats
+    - jetstream
+    - messaging
+    - management
+    - ui
+    kubeVersion: '>=1.23.0'
+    maintainers:
+    - name: Paigham
+      url: https://github.com/LetsConvert-IO/paigham-nats
+    name: paigham-nats
+    sources:
+    - https://github.com/LetsConvert-IO/paigham-nats
+    type: application
+    urls:
+    - https://github.com/LetsConvert-IO/paigham-nats/releases/download/paigham-nats-0.1.2/paigham-nats-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-06-02T18:32:54.982750315Z"
     description: A Helm chart for Paigham - NATS JetStream Management UI
     digest: fc6b343fdbd5e5368095a7782b79fcfaae638ec137272acbc98694cd961e8eda
@@ -23,4 +46,4 @@ entries:
     urls:
     - https://github.com/LetsConvert-IO/paigham-nats/releases/download/paigham-nats-0.1.1/paigham-nats-0.1.1.tgz
     version: 0.1.1
-generated: "2026-06-02T18:32:54.982759021Z"
+generated: "2026-06-02T19:39:19.259931572Z"
