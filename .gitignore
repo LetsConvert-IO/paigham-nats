@@ -1,6 +1,10 @@
 # Go binary
 backend/paigham-nats
 
+# Frontend build output copied here before go build
+backend/static/*
+!backend/static/.gitkeep
+
 # Node
 frontend/node_modules/
 frontend/.svelte-kit/
