@@ -1,7 +1,0 @@
-{
-	"/": [],
-	"/consumers/[stream]/[name]": [],
-	"/streams": [],
-	"/streams/[name]": [],
-	"/streams/[name]/messages": []
-}
