@@ -3,7 +3,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/paigham/paigham-nats
+  repository: ghcr.io/letsconvert-io/paigham-nats
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -20,6 +20,9 @@ serviceAccount:
   # The name of the service account to use.
   name: ""
 
+deploymentAnnotations: {}
+  # argocd.argoproj.io/sync-wave: "1"
+
 podAnnotations: {}
 
 podSecurityContext: {}
@@ -32,6 +35,9 @@ securityContext:
 service:
   type: ClusterIP
   port: 8080
+  annotations: {}
+    # service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    # metallb.universe.tf/address-pool: production
 
 ingress:
   enabled: false
