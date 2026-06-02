@@ -71,10 +71,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: redhat-actions/chart-verifier@v1
-        with:
-          chart_uri: helm/paigham-nats
-          verify_args: --skip minimum-two-replicas
+      - name: Install chart-verifier
+        run: |
+          curl -sL https://github.com/redhat-certification/chart-verifier/releases/latest/download/chart-verifier_linux_amd64.tar.gz \
+            | tar -xz
+          sudo mv chart-verifier /usr/local/bin/chart-verifier
+      - name: Verify chart
+        run: chart-verifier verify --skip minimum-two-replicas helm/paigham-nats
 
   build-docker:
     runs-on: ubuntu-latest
