@@ -12,6 +12,7 @@ jobs:
     outputs:
       backend: ${{ steps.filter.outputs.backend }}
       frontend: ${{ steps.filter.outputs.frontend }}
+      helm: ${{ steps.filter.outputs.helm }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -22,6 +23,8 @@ jobs:
               - 'backend/**'
             frontend:
               - 'frontend/**'
+            helm:
+              - 'helm/**'
 
   test-backend:
     needs: changes
@@ -53,6 +56,34 @@ jobs:
       - run: npm run build
         working-directory: frontend
 
+  lint-helm:
+    needs: changes
+    if: needs.changes.outputs.helm == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+      - run: helm lint helm/paigham-nats
+
+  verify-chart:
+    needs: changes
+    if: needs.changes.outputs.helm == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install chart-verifier
+        run: |
+          VERSION=$(curl -s https://api.github.com/repos/redhat-certification/chart-verifier/releases/latest \
+            | grep '"tag_name"' | cut -d'"' -f4)
+          curl -sL "https://github.com/redhat-certification/chart-verifier/releases/download/${VERSION}/chart-verifier-${VERSION}.tgz" \
+            | tar -xz
+          sudo mv chart-verifier /usr/local/bin/chart-verifier
+      - name: Verify chart
+        run: |
+          chart-verifier verify \
+            --enable has-readme,contains-values,has-kubeversion,not-contains-crds,helm-lint,not-contain-csi-objects \
+            helm/paigham-nats
+
   build-docker:
     runs-on: ubuntu-latest
     steps:
@@ -69,7 +100,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   ci:
-    needs: [test-backend, test-frontend, build-docker]
+    needs: [test-backend, test-frontend, build-docker, lint-helm, verify-chart]
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -77,7 +108,9 @@ jobs:
         run: |
           if [[ "${{ needs.test-backend.result }}" == "failure" || \
                 "${{ needs.test-frontend.result }}" == "failure" || \
-                "${{ needs.build-docker.result }}" == "failure" ]]; then
+                "${{ needs.build-docker.result }}" == "failure" || \
+                "${{ needs.lint-helm.result }}" == "failure" || \
+                "${{ needs.verify-chart.result }}" == "failure" ]]; then
             exit 1
           fi
           echo "All checks passed"
