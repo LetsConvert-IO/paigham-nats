@@ -182,7 +182,7 @@
 					</li>
 				</ul>
 				<div class="absolute bottom-0 left-0 right-0 p-4 border-t border-base-200">
-					<span class="text-xs text-base-content/40 font-mono">v1.0.1</span>
+					<span class="text-xs text-base-content/40 font-mono">v1.0.2</span>
 				</div>
 			</aside>
 		</div>
