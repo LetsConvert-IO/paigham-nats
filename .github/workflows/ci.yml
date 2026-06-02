@@ -79,7 +79,7 @@ jobs:
             | tar -xz
           sudo mv chart-verifier /usr/local/bin/chart-verifier
       - name: Verify chart
-        run: chart-verifier verify --skip minimum-two-replicas helm/paigham-nats
+        run: chart-verifier verify --disable minimum-two-replicas helm/paigham-nats
 
   build-docker:
     runs-on: ubuntu-latest
