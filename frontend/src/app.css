@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: oklch(var(--b2));
+}
+
+::-webkit-scrollbar-thumb {
+	background: oklch(var(--bc) / 0.3);
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: oklch(var(--bc) / 0.5);
+}
+
+/* JSON viewer styles */
+.json-viewer {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	font-size: 0.875rem;
+	line-height: 1.5;
+}
+
+.json-key {
+	color: oklch(var(--p));
+}
+
+.json-string {
+	color: oklch(var(--su));
+}
+
+.json-number {
+	color: oklch(var(--in));
+}
+
+.json-boolean {
+	color: oklch(var(--wa));
+}
+
+.json-null {
+	color: oklch(var(--er));
+}
