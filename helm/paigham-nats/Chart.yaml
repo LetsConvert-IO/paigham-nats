@@ -12,7 +12,7 @@ keywords:
   - ui
 maintainers:
   - name: Paigham
-    url: https://github.com/paigham/paigham-nats
-home: https://github.com/paigham/paigham-nats
+    url: https://github.com/LetsConvert-IO/paigham-nats
+home: https://github.com/LetsConvert-IO/paigham-nats
 sources:
-  - https://github.com/paigham/paigham-nats
+  - https://github.com/LetsConvert-IO/paigham-nats

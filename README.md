@@ -69,7 +69,7 @@ services:
 ### Using Helm
 
 ```bash
-helm repo add paigham https://paigham.github.io/paigham-nats
+helm repo add paigham https://letsconvert-io.github.io/paigham-nats
 helm install paigham paigham/paigham-nats \
   --set config.natsUrl=nats://nats:4222
 ```
