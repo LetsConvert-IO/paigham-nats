@@ -73,7 +73,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install chart-verifier
         run: |
-          curl -sL https://github.com/redhat-certification/chart-verifier/releases/latest/download/chart-verifier_linux_amd64.tar.gz \
+          VERSION=$(curl -s https://api.github.com/repos/redhat-certification/chart-verifier/releases/latest \
+            | grep '"tag_name"' | cut -d'"' -f4)
+          curl -sL "https://github.com/redhat-certification/chart-verifier/releases/download/${VERSION}/chart-verifier-${VERSION}.tgz" \
             | tar -xz
           sudo mv chart-verifier /usr/local/bin/chart-verifier
       - name: Verify chart
