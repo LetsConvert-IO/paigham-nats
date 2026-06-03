@@ -1,0 +1,8 @@
+{
+  "name": "paigham-scripts",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "playwright": "^1.60.0"
+  }
+}

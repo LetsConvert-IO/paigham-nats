@@ -20,6 +20,10 @@
   <a href="#development">Development</a>
 </p>
 
+<p align="center">
+  <img src="docs/demo.gif" alt="Paigham Demo" />
+</p>
+
 ---
 
 ## Features
@@ -124,14 +128,18 @@ ALLOWED_USERS=admin@example.com,user@example.com
 helm install paigham ./helm/paigham-nats \
   --set config.natsUrl=nats://nats:4222
 
-# With Google OAuth
+# With Google OAuth (credentials from a Kubernetes secret)
+kubectl create secret generic paigham-oauth \
+  --from-literal=GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com \
+  --from-literal=GOOGLE_CLIENT_SECRET=your-client-secret \
+  --from-literal=SESSION_SECRET=$(openssl rand -hex 32)
+
 helm install paigham ./helm/paigham-nats \
   --set config.natsUrl=nats://nats:4222 \
   --set config.authMode=google \
-  --set config.googleClientId=your-client-id \
-  --set config.googleClientSecret=your-client-secret \
   --set config.baseUrl=https://paigham.example.com \
-  --set config.allowedUsers="admin@example.com"
+  --set config.allowedUsers="admin@example.com" \
+  --set existingSecret=paigham-oauth
 
 # With Ingress
 helm install paigham ./helm/paigham-nats \
@@ -141,6 +149,20 @@ helm install paigham ./helm/paigham-nats \
   --set ingress.hosts[0].host=paigham.example.com \
   --set ingress.hosts[0].paths[0].path=/ \
   --set ingress.hosts[0].paths[0].pathType=Prefix
+
+# With AWS NLB service annotations
+helm install paigham ./helm/paigham-nats \
+  --set config.natsUrl=nats://nats:4222 \
+  --set service.type=LoadBalancer \
+  --set "service.annotations.service\.beta\.kubernetes\.io/aws-load-balancer-type=nlb" \
+  --set "service.annotations.service\.beta\.kubernetes\.io/aws-load-balancer-scheme=internet-facing"
+
+# With Argo CD sync-wave and pod annotations (e.g. Prometheus scraping)
+helm install paigham ./helm/paigham-nats \
+  --set config.natsUrl=nats://nats:4222 \
+  --set "deploymentAnnotations.argocd\.argoproj\.io/sync-wave=2" \
+  --set "podAnnotations.prometheus\.io/scrape=true" \
+  --set "podAnnotations.prometheus\.io/port=8080"
 ```
 
 ### Docker Build
